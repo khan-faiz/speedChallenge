@@ -1,4 +1,4 @@
-
+import time
 import cv2
 import numpy as np
 import pandas as pd
@@ -18,8 +18,12 @@ from sklearn.model_selection import train_test_split
 
 
 # change these depending on your file names / paths
-TEST_GROUND_TRUTH_JSON_PATH = './data/drive.json' # change this to the test ground truth
-VIDEO_PATH = './data/drive.mp4' # change this to the test video
+#TEST_GROUND_TRUTH_JSON_PATH = './data/drive.json' # change this to the test ground truth
+#VIDEO_PATH = './data/drive.mp4' # change this to the test video
+#TEST_GROUND_TRUTH_JSON_PATH = './../data/train.json' # change this to the test ground truth
+#VIDEO_PATH = './../data/train.mp4' # change this to the test video
+TEST_GROUND_TRUTH_JSON_PATH = './../data/test.json' # change this to the test ground truth
+VIDEO_PATH = './../data/test.mp4' # change this to the test video
 TEST_IMG_PATH = './test/test_IMG/'
 DRIVE_TEST_CSV_PATH = './test/driving_test.csv'
 TEST_PREDICT_PATH = './test/test_predict/'
@@ -28,6 +32,7 @@ TEST_PREDICT_PATH = './test/test_predict/'
 WEIGHTS = 'model-weights-Vtest.h5'
 EVAL_SAMPLE_SIZE = 100 # Number of samples to evaluate to compute MSE
 
+'''
 with open(TEST_GROUND_TRUTH_JSON_PATH) as json_data:
     ground_truth = json.load(json_data)
     # json_data.close()
@@ -50,7 +55,9 @@ with open(DRIVE_TEST_CSV_PATH, 'w') as csvfile:
             image_path = os.path.join(TEST_IMG_PATH, str(item[0]) + '.jpg')
             
             # save image to IMG folder
-            cv2.imwrite(image_path, image)
+            cv2.imwrite(image_path, image, [int(cv2.IMWRITE_JPEG_QUALITY),100])
+            time.sleep(0.75)
+            print('wrote img', idx)
             
             # write row to driving.csv
             writer.writerow({'image_path': image_path, 
@@ -58,9 +65,12 @@ with open(DRIVE_TEST_CSV_PATH, 'w') as csvfile:
                      'speed':item[1],
                     })
 print('done writing to driving_test.csv and test_IMG folder')
+exit()
+'''
 
-
+#Dont think these are necessary
 ### Preprocessing helpers
+'''
 def preprocess_image(image):
     image_cropped = image[100:440, :-90] # -> (380, 550, 3)
     image = cv2.resize(image_cropped, (220, 66), interpolation = cv2.INTER_AREA)
@@ -72,6 +82,7 @@ def preprocess_image_valid_from_path(image_path, speed):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = preprocess_image(img)
     return img, speed
+'''
 
 
 
@@ -83,11 +94,11 @@ from keras.layers.pooling import MaxPooling2D
 from keras.layers.core import Activation, Dropout, Flatten, Dense, Lambda
 from keras.layers import ELU
 from keras.optimizers import Adam
-tf.python.control_flow_ops = tf
-N_img_height = 66
-N_img_width = 220
-N_img_channels = 3
+tf.control_flow_ops = tf
 
+#N_img_height = 66
+#N_img_width = 220
+#N_img_channels = 3
 
 model = nvidia_model()
 model.load_weights(WEIGHTS)
@@ -122,8 +133,12 @@ for idx in indices:
         row1 = row_now
         row2 = row_next
 
-    x1, y1 = preprocess_image_valid_from_path(row1['image_path'].values[0], row1['speed'].values[0])
-    x2, y2 = preprocess_image_valid_from_path(row2['image_path'].values[0], row2['speed'].values[0])
+    #img = cv2.imread(image_path)
+    #x1, y1 = preprocess_image_valid_from_path(row1['image_path'].values[0], row1['speed'].values[0])
+    x1, y1 = (cv2.imread(row1['image_path'].values[0]), row1['speed'].values[0])
+    #x2, y2 = preprocess_image_valid_from_path(row2['image_path'].values[0], row2['speed'].values[0])
+    x2, y2 = (cv2.imread(row@['image_path'].values[0]), row2['speed'].values[0])
+
     img_diff = opticalFlowDenseDim3(x1, x2)
     img_diff_reshaped = img_diff.reshape(1, img_diff.shape[0], img_diff.shape[1], img_diff.shape[2])
     prediction = model.predict(img_diff_reshaped)
