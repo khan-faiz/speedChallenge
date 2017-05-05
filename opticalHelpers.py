@@ -52,7 +52,7 @@ def opticalFlowDenseDim3(image_current, image_next):
     gray_current = cv2.cvtColor(image_current, cv2.COLOR_RGB2GRAY)
     gray_next = cv2.cvtColor(image_next, cv2.COLOR_RGB2GRAY)
     
-    hsv = np.zeros((66, 220, 3))
+    hsv = np.zeros((480, 640, 3))
 
     # set HSV's Saturation value to the original image's saturation value
     hsv_next = cv2.cvtColor(image_next, cv2.COLOR_RGB2HSV)
@@ -89,6 +89,7 @@ def opticalFlowDenseDim3(image_current, image_next):
     # value corresponds to magnitude
     hsv[:,:,2] = cv2.normalize(mag,None,0,255,cv2.NORM_MINMAX)
     
+    #print('mag',mag, cv2.normalize(mag,None,0,255,cv2.NORM_MINMAX) )
     hsv = np.asarray(hsv, dtype = np.float32)
     # convert back to RGB
     rgb_flow = cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB)
@@ -107,7 +108,7 @@ def opticalFlowDenseDim5(image_current, image_next):
     gray_next = cv2.cvtColor(image_next, cv2.COLOR_RGB2GRAY)
     
     
-    data = np.zeros((66, 220, 5))
+    data = np.zeros((480, 640, 5))
     
  
     # Flow Parameters

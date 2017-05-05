@@ -42,7 +42,8 @@ errors = []
 batch = []
 labels = []
 data = pd.read_csv(DRIVE_TEST_CSV_PATH)
-indices = [np.random.randint(1, len(data) - 1) for i in range(samples)]
+#indices = [np.random.randint(1, len(data) - 1) for i in range(samples)]
+indices = range(10798)
 
 for idx in indices:
     row_now = data.iloc[[idx]].reset_index()
@@ -67,15 +68,22 @@ for idx in indices:
 
     #img = cv2.imread(image_path)
     #x1, y1 = preprocess_image_valid_from_path(row1['image_path'].values[0], row1['speed'].values[0])
-    x1, y1 = (cv2.imread(row1['image_path'].values[0]), row1['speed'].values[0])
+    #x1, y1 = (cv2.imread(row1['image_path'].values[0]), row1['speed'].values[0])
+    x1 = cv2.imread(row1['image_path'].values[0])
+    x2 = cv2.imread(row2['image_path'].values[0])
     #x2, y2 = preprocess_image_valid_from_path(row2['image_path'].values[0], row2['speed'].values[0])
-    x2, y2 = (cv2.imread(row@['image_path'].values[0]), row2['speed'].values[0])
+    #x2, y2 = (cv2.imread(row@['image_path'].values[0]), row2['speed'].values[0])
 
     img_diff = opticalFlowDenseDim3(x1, x2)
     img_diff_reshaped = img_diff.reshape(1, img_diff.shape[0], img_diff.shape[1], img_diff.shape[2])
     prediction = model.predict(img_diff_reshaped)
-    errors.append(np.square(abs(prediction - y2)))
+    #print(x1,x2,prediction)
+    #print(prediction, 'prediction', )
+    #errors.append(np.square(abs(prediction - y2)))
+    #errors.append(np.square(abs(prediction)))
 
-MSE = np.mean(errors)
-print('MSE: ', MSE)
+    print(row1,row2)
+    print(prediction, idx)
+#MSE = np.mean(errors)
+#print('MSE: ', MSE)
 
