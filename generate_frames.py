@@ -13,6 +13,7 @@ TEST_GROUND_TRUTH_JSON_PATH = './../data/test.json' # change this to the test gr
 VIDEO_PATH = './../data/test.mp4' # change this to the test video
 
 DRIVE_TEST_CSV_PATH = './test/driving_test.csv'
+TEST_IMG_PATH = './test/test_IMG/'
 
 with open(TEST_GROUND_TRUTH_JSON_PATH) as json_data:
     ground_truth = json.load(json_data)

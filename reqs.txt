@@ -1,10 +1,40 @@
-sudo apt-get update
-sudo apt-get install python3-pip python3-tk python3-virtualenv libopencv-dev python-opencv virtualenv
-virtualenv --python=python3.5 .
-http://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/
+sudo apt-get update && sudo apt-get upgrade
+
+# virtualenv
+sudo apt-get install virtualenv
+virtualenv -p /usr/bin/python3 .
+
+# pip reqs
+sudo apt-get install python3-tk 
 pip install pandas
 pip install matplotlib
 pip install tensorflow
 pip install sklearn
 pip install scipy
 pip install keras
+
+## cuda
+http://www.cs.stevens.edu/~kbatsos/awscudasetup.html
+different for g2 and p2 instance types
+
+wget http://us.download.nvidia.com/XFree86/Linux-x86_64/367.57/NVIDIA-Linux-x86_64-367.57.run
+chmod +x ^ && sudo bash ^
+
+wget https://developer.nvidia.com/compute/cuda/8.0/Prod2/local_installers/cuda_8.0.61_375.26_linux-run
+sudo sh cuda_8.0.61_375.26_linux-run.sh --kernel-source-path=/usr/src/linux-source-4.4.0/
+
+sudo apt-get install build-essential
+sudo apt-get install linux-source
+sudo apt-get install linux-headers-`uname -r`
+bash sh cuda
+
+## opencv
+http://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/
+sudo apt-get install build-essential cmake pkg-config libjpeg8-dev libtiff5-dev libjasper-dev libpng12-dev libopencv-dev libgstreamer0.10-dev libgstreamer1.0-dev libgstreamer-plugins-base0.10-dev libgstreamer-plugins-bad1.0-dev  libgstreamer-plugins-good1.0-dev libgstreamer-plugins-base1.0-dev libgtk-3-dev python2.7-dev python3.5-dev
+wget https://github.com/opencv/opencv/archive/3.2.0.zip
+sudo apt-get install unzip
+cmake . -DWITH_IPP=OFF
+sudo make install
+
+# extra
+export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.5/site-packages
