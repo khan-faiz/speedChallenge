@@ -66,17 +66,17 @@ def generate_training_data(data, batch_size = 32):
                                                bright_factor)
            
             # compute optical flow send in images as RGB
-            #rgb_diff = opticalFlowDense(x1, x2)
+            rgb_diff = opticalFlowDense(x1, x2)
             #print('diff', rgb_diff)
                         
             # calculate mean speed
             y = np.mean([y1, y2])
             
-            #image_batch[i] = rgb_diff
-            image_batch[i] = x2
+            image_batch[i] = rgb_diff
+            #image_batch[i] = x2
             label_batch[i] = y
             
-            print('processed 1 train image', time.sleep(0.25),i)
+            #print('processed 1 train image', time.sleep(0.25),i)
 
         # Shuffle the pairs before they get fed into the network
         yield shuffle(image_batch, label_batch)
@@ -165,14 +165,14 @@ def generate_validation_data(data):
             x1, y1 = preprocess_image_valid_from_path(row1['image_path'].values[0], row1['speed'].values[0])
             x2, y2 = preprocess_image_valid_from_path(row2['image_path'].values[0], row2['speed'].values[0])
             
-            #img_diff = opticalFlowDense(x1, x2)
-            img_diff = x2
+            img_diff = opticalFlowDense(x1, x2)
+            #img_diff = x2
             img_diff = img_diff.reshape(1, img_diff.shape[0], img_diff.shape[1], img_diff.shape[2])
             y = np.mean([y1, y2])
             
             speed = np.array([[y]])
 
-            print('processed 1 valid image', time.sleep(0.25),)
+            #print('processed 1 valid image', time.sleep(0.25),)
 
             yield img_diff, speed
 
