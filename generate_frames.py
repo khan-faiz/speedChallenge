@@ -12,6 +12,8 @@ import csv
 TEST_GROUND_TRUTH_JSON_PATH = './../data/test.json' # change this to the test ground truth
 VIDEO_PATH = './../data/test.mp4' # change this to the test video
 
+DRIVE_TEST_CSV_PATH = './test/driving_test.csv'
+
 with open(TEST_GROUND_TRUTH_JSON_PATH) as json_data:
     ground_truth = json.load(json_data)
     # json_data.close()
@@ -35,7 +37,7 @@ with open(DRIVE_TEST_CSV_PATH, 'w') as csvfile:
             
             # save image to IMG folder
             cv2.imwrite(image_path, image, [int(cv2.IMWRITE_JPEG_QUALITY),100])
-            time.sleep(0.75)
+            #time.sleep(0.75)
             print('wrote img', idx)
             
             # write row to driving.csv
