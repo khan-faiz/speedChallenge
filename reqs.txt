@@ -1,0 +1,10 @@
+sudo apt-get update
+sudo apt-get install python3-pip python3-tk python3-virtualenv libopencv-dev python-opencv virtualenv
+virtualenv --python=python3.5 .
+http://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/
+pip install pandas
+pip install matplotlib
+pip install tensorflow
+pip install sklearn
+pip install scipy
+pip install keras
